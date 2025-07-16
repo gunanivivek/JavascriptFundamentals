@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Quiz Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f9f9f9;
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .question {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .score {
+      font-size: 22px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <div id="quiz">
+    <div class="question" id="question">Loading...</div>
+    <div class="options" id="options"></div>
+  </div>
+</div>
+
+<script>
+  const quizData = [
+    {
+      question: "Which language runs in a web browser?",
+      options: ["Java", "C", "Python", "JavaScript"],
+      answer: "JavaScript"
+    },
+    {
+      question: "What does CSS stand for?",
+      options: ["Central Style Sheets", "Cascading Style Sheets", "Cascading Simple Sheets", "Cars SUVs Sailboats"],
+      answer: "Cascading Style Sheets"
+    },
+    {
+      question: "What does HTML stand for?",
+      options: ["Hypertext Markup Language", "Hyper Trainer Marking Language", "Hyper Text Markdown Language", "None of the above"],
+      answer: "Hypertext Markup Language"
+    }
+  ];
+
+  let currentQuestion = 0;
+  let score = 0;
+
+  const questionEl = document.getElementById('question');
+  const optionsEl = document.getElementById('options');
+
+  function loadQuestion() {
+    const q = quizData[currentQuestion];
+    questionEl.textContent = q.question;
+    optionsEl.innerHTML = '';
+
+    q.options.forEach(option => {
+      const button = document.createElement('button');
+      button.textContent = option;
+      button.onclick = () => selectAnswer(option);
+      optionsEl.appendChild(button);
+    });
+  }
+
+  function selectAnswer(selected) {
+    if (selected === quizData[currentQuestion].answer) {
+      score++;
+    }
+
+    currentQuestion++;
+
+    if (currentQuestion < quizData.length) {
+      loadQuestion();
+    } else {
+      showScore();
+    }
+  }
+
+  function showScore() {
+    questionEl.textContent = "Quiz Completed!";
+    optionsEl.innerHTML = `<p class="score">Your score: ${score} / ${quizData.length}</p>`;
+  }
+
+  // Start quiz
+  loadQuestion();
+</script>
+
+</body>
+</html>
